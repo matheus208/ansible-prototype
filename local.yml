@@ -1,15 +1,70 @@
 ---
 - hosts: localhost
   connection: local
-  become: no
+  #become: true
   tasks:
-  - name: install htop
+  - name: install packages
     package:
-      name: htop
+      name:
+        - htop
+        - git
+        - terminator
+        - emacs
+
+  - name: install docker dependencies
+    package:
+      name:
+        - bc
+        - curl
+        - expect
+        - git
+        - ca-certificates
+
+  - name: Create Docker GPG key directory
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: "0755"
+
+  - name: Download Docker's official GPG key
+    get_url:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      dest: /etc/apt/keyrings/docker.asc
+      mode: "0644"
+      
+  - name: Add Docker repository to Apt sources
+    apt_repository:
+      repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+      state: present
+      filename: docker
+      
+  - name: Update apt cache after adding Docker repository
+    apt:
+      update_cache: yes
+      
+  - name: Install Docker and Docker Compose
+    package:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: present
+      
+  - name: Ensure Docker service is enabled and started
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Add ubuntu user to docker group
+    user:
+      name: ubuntu
+      groups: docker
+      append: yes
+
   - name: install openvpn
     package:
-      name: openvpn
-  - name: install git
-    package:
-      name: git
-      
+      name: openvpn    
+
