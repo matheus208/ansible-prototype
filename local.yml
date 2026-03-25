@@ -110,7 +110,7 @@
 
   - name: Install nvm
     shell: >
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | sh
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
     args:
       executable: /bin/bash
       chdir: "{{ ansible_env.HOME }}"
