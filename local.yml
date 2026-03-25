@@ -84,12 +84,16 @@
       dest: "/tmp/install.sh"
       mode: '0755'
 
+  - name: Debug user home
+    ansible.builtin.debug:
+      var: ansible_facts['env']['SUDO_USER']
+
   - name: Install ohmyzsh
     become: false
     ansible.builtin.script:
       cmd: "/tmp/install.sh"
     args:
-      creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
+      creates: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.oh-my-zsh"
   
   - name: Install zsh-autosuggestions plugin
     become: false
