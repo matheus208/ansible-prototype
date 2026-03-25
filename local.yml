@@ -85,6 +85,7 @@
       mode: '0755'
 
   - name: Install ohmyzsh
+    become: false
     ansible.builtin.script:
       cmd: "/tmp/install.sh"
   
