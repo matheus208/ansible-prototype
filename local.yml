@@ -70,7 +70,7 @@
   - name: Add ubuntu user to docker group
     become: yes
     user:
-      name: "{{ username_on_the_host }}"
+      name: "{{ ansible_facts['env']['SUDO_USER'] }}"
       groups: docker
       append: yes
 
