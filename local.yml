@@ -58,12 +58,20 @@
       state: started
       enabled: yes
 
+  - name: get the username running the deploy
+    become: false
+    local_action: command whoami
+    register: username_on_the_host
+      
   - name: Add ubuntu user to docker group
     user:
-      name: ubuntu
+      name: {{ username_on_the_host }}
       groups: docker
       append: yes
 
   - name: install openvpn
     package:
       name: openvpn
+
+
+
