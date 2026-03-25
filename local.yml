@@ -66,9 +66,9 @@
   - name: Debug print username_on_the_host var
     ansible.builtin.debug:
       var: username_on_the_host
-      verbosity: 2
 
   - name: Add ubuntu user to docker group
+    become: yes
     user:
       name: "{{ username_on_the_host }}"
       groups: docker
