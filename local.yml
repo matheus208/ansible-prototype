@@ -153,9 +153,9 @@
   - name: Update .zshrc
     become: false
     ansible.builtin.lineinfile:
-      path: "/home/{{ user }}/.zshrc"
+      path: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.zshrc"
       insertafter: EOF
-      line: "source /home/{{ user }}/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
+      line: "source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
       
   - name: Change user shell to zsh 
     become: true
