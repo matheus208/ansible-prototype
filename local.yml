@@ -3,11 +3,6 @@
   connection: local
   become: true
   tasks:
-  - name: creates variable for username
-    hosts: localhost
-    become: no
-    vars:
-      the_user: "{{ ansible_user_id }}"
   - name: install packages
     package:
       name:
@@ -71,53 +66,4 @@
 
   - name: install openvpn
     package:
-      name: openvpn    
-
-
-  - name: Install zsh
-    ansible.builtin.package:
-      name: zsh
-      state: present
-    become: true
-  - name: Set user shell to zsh
-    ansible.builtin.user:
-      name: "{{ ansible_user }}"
-      shell: /bin/zsh
-    become: true
-  - name: Download ohmyzsh
-    ansible.builtin.get_url:
-      url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-      dest: "/tmp/install_oh_my_zsh.sh"
-      mode: '0755'
-  - name: Install ohmyzsh
-    ansible.builtin.script:
-      cmd: "/tmp/install_oh_my_zsh.sh"
-  - name: Install PowerLevel10K
-    ansible.builtin.git:
-      repo: https://github.com/romkatv/powerlevel10k.git
-      dest: "/home/{{ ansible_user }}/.oh-my-zsh/custom/themes/powerlevel10k"
-      depth: 1
-  - name: Download NerdFonts
-    ansible.builtin.get_url:
-      url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip
-      dest: "/home/{{ ansible_user }}/Meslo.zip"
-  - name: Create temp directory
-    ansible.builtin.file:
-      path: "/home/{{ ansible_user }}/Meslo"
-      state: directory
-      mode: '0755'
-  - name: Install font files
-    ansible.builtin.unarchive:
-      src: "/home/{{ ansible_user }}/Meslo.zip"
-      dest: "/home/{{ ansible_user }}/Meslo"
-  - name: Move font files to fonts directory
-    ansible.builtin.copy:
-      src: "/home/{{ ansible_user }}/Meslo"
-      dest: /usr/share/fonts/Meslo
-      owner: root
-    become: true
-  - name: Update .zshrc
-    ansible.builtin.lineinfile:
-      path: "/home/{{ ansible_user }}/.zshrc"
-      insertafter: EOF
-      line: "source /home/{{ ansible_user }}/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
+      name: openvpn
