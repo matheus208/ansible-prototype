@@ -88,29 +88,35 @@
     become: false
     ansible.builtin.script:
       cmd: "/tmp/install.sh"
+    args:
+      creates: "{{ ansible_env.HOME }}/.oh-my-zsh"
   
   - name: Install zsh-autosuggestions plugin
+    become: false
     ansible.builtin.git:
       repo: https://github.com/zsh-users/zsh-autosuggestions
-      dest: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
       depth: 1
   
   - name: Install zsh-completions plugin
+    become: false
     ansible.builtin.git:
       repo: https://github.com/zsh-users/zsh-completions
-      dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions"
       depth: 1
   
   - name: Install zsh-syntax-highlighting plugin
+    become: false
     ansible.builtin.git:
       repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-      dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
       depth: 1
 
   - name: Install Powerline10k theme
+    become: false
     ansible.builtin.git:
       repo: https://github.com/romkatv/powerlevel10k.git
-      dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
       depth: 1
   
   - name: Change user shell to zsh 
