@@ -65,7 +65,7 @@
       
   - name: Add ubuntu user to docker group
     user:
-      name: {{ username_on_the_host }}
+      name: "{{ username_on_the_host }}"
       groups: docker
       append: yes
 
