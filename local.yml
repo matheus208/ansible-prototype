@@ -109,19 +109,13 @@
       shell: /bin/zsh
 
   - name: Install nvm
-    shell: >
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
     args:
       executable: /bin/bash
       chdir: "{{ ansible_env.HOME }}"
       creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
-  - name: Loads nvm for the current shell
-    shell: >
-      export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
   - name: Install node and set version
-    shell: >
-      /bin/bash -c "source ~/.nvm/nvm.sh && nvm install 0.20 && nvm alias default 0.20"
-      creates=/home/{{ ansible_facts['env']['SUDO_USER']  }}/.nvm/alias
+    shell: /bin/bash -c "source ~/.nvm/nvm.sh && nvm install 0.20 && nvm alias default 0.20"
+    args:
+      creates: "{{ ansible_env.HOME }}/.nvm/alias"
