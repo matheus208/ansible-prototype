@@ -58,15 +58,6 @@
       state: started
       enabled: yes
 
-  - name: get the username running the deploy
-    become: false
-    local_action: command whoami
-    register: username_on_the_host
-
-  - name: Debug print username_on_the_host var
-    ansible.builtin.debug:
-      var: username_on_the_host
-
   - name: Add ubuntu user to docker group
     become: yes
     user:
@@ -77,6 +68,4 @@
   - name: install openvpn
     package:
       name: openvpn
-
-
 
