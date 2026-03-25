@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  #become: true
+  become: true
   tasks:
   - name: install packages
     package:
@@ -116,3 +116,5 @@
       path: "/home/{{ user }}/.zshrc"
       insertafter: EOF
       line: "source /home/{{ user }}/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
+
+      sudo ansible-pull -U https://github.com/matheus208/ansible-prototype.git
