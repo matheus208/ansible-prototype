@@ -118,7 +118,7 @@
       repo: https://github.com/romkatv/powerlevel10k.git
       dest: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.oh-my-zsh/custom/themes/powerlevel10k"
       depth: 1
-  
+      
   - name: Change user shell to zsh 
     become: true
     ansible.builtin.user:
@@ -126,6 +126,7 @@
       shell: /bin/zsh
 
   - name: Install nvm
+    become: false
     shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
     args:
       executable: /bin/bash
@@ -133,6 +134,7 @@
       creates: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.nvm/nvm.sh"
 
   - name: Install node 18 to 22, settings 20 as default
+    become: false
     shell: /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {18..22} && nvm alias default 20"
     args:
       creates: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.nvm/alias"
