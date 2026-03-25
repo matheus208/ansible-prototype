@@ -116,12 +116,46 @@
       dest: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
       depth: 1
 
-  - name: Install Powerline10k theme
+  - name: Install Powerlevel10k theme
     become: false
     ansible.builtin.git:
       repo: https://github.com/romkatv/powerlevel10k.git
       dest: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.oh-my-zsh/custom/themes/powerlevel10k"
       depth: 1
+
+  - name: Download NerdFonts
+    become: false
+    ansible.builtin.get_url:
+      url: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Meslo.zip
+      dest: "/tmp/Meslo.zip"
+
+  - name: Create temp directory
+    become: false
+    ansible.builtin.file:
+      path: "/tmp/Meslo"
+      state: directory
+      mode: '0755'
+        
+  - name: Install font files
+    become: false
+    ansible.builtin.unarchive:
+      src: "/tmp/Meslo.zip"
+      dest: "/tmp/Meslo"
+
+  - name: Move font files to fonts directory
+    become: false
+    ansible.builtin.copy:
+      src: "/tmp/Meslo"
+      dest: /usr/share/fonts/Meslo
+      owner: root
+    become: true
+
+  - name: Update .zshrc
+    become: false
+    ansible.builtin.lineinfile:
+      path: "/home/{{ user }}/.zshrc"
+      insertafter: EOF
+      line: "source /home/{{ user }}/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme"
       
   - name: Change user shell to zsh 
     become: true
@@ -139,6 +173,6 @@
 
   - name: Install node 18 to 22, settings 20 as default
     become: false
-    shell: /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {18..22} && nvm alias default 20"
+    shell: /bin/bash -c "source ~/.nvm/nvm.sh && nvm install 18 && nvm install 19 && nvm install 20 && nvm install 21 && nvm install 22 && nvm alias default 20"
     args:
       creates: "/home/{{ ansible_facts['env']['SUDO_USER'] }}/.nvm/alias"
